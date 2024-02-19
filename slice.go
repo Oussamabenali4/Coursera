@@ -2,51 +2,45 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 )
 
 func main() {
-	sl := make([]int, 3)
-	var s string
-	var i int = 0
+	var numList []int
+	printSlice(numList)
+
+	// append works on nil slices.
 	for {
-		fmt.Println("Add a number OR X to quit!")
+		var s string
+		fmt.Println("Please enter distinct intergers:\n")
 		fmt.Scan(&s)
-		if s == "x" || s == "X" {
+		if s == "X" {
 			break
-		} else {
+		}
 
-			number, err := strconv.Atoi(s)
-			if err == nil {
-				if i < 3 {
-					// append the first 3 places.
-					sl[i] = number
-					fmt.Println("The sorted slice is :")
-					fmt.Println(sl)
-					i++
-				} else {
-					sl = Sorting(append(sl, number))
-					fmt.Println("The sorted slice is :")
-					fmt.Println(sl)
-				}
+		//parseInt after input
+		num, _ := strconv.Atoi(s)
 
-			} else {
-				fmt.Println("Invalid input!")
-
-			}
-
+		//If number is new, not existing in list, add
+		if !IsContains(numList, num) {
+			//Slice
+			numList = append(numList, num)
+			sort.Ints(numList)
+			printSlice(numList)
 		}
 	}
-
 }
 
-func Sorting(sl []int) []int {
-	for i := 0; i < len(sl)-1; i++ {
-		for j := i + 1; j < len(sl); j++ {
-			if sl[i] > sl[j] {
-				sl[i], sl[j] = sl[j], sl[i]
-			}
+func printSlice(s []int) {
+	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+}
+
+func IsContains(nl []int, n int) bool {
+	for _, i := range nl {
+		if i == n {
+			return true
 		}
 	}
-	return sl
+	return false
 }
